@@ -2,14 +2,21 @@
 // Created by Gabriel Mitterrutzner on 2019-02-12.
 //
 
+#ifdef __APPLE__
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
+#elif defined(_WIN32) || defined(WIN32)
+#include <SDL.h>
+#include <SDL_main.h>
+#include <SDL_ttf.h>
+#endif
+
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "header/graphics_helper.h"
-#include "header/window.h"
+#include "../header/graphics_helper.h"
+#include "../header/window.h"
 
 #define SCREEN_W 640
 #define SCREEN_H 380
@@ -102,7 +109,7 @@ void caller(graphic_window_t* window, void* start_point) {
     //angle = (angle + 1);
 }
 
-int main(void) {
+int main(int argc, char* argv[]) {
     graphic_window_t* window = create_window(SCREEN_H, SCREEN_W, SCREEN_SCALE, SCREEN_NAME);
     SDL_Point start_point = create_point(SCREEN_W / 2, SCREEN_H - 10);
 

@@ -2,12 +2,18 @@
 // Created by Gabriel Mitterrutzner on 2019-02-18.
 //
 
+#ifdef __APPLE__
 #include <SDL2/SDL.h>
+#elif defined(_WIN32) || defined(WIN32)
+#include <SDL.h>
+#include <SDL_main.h>
+#endif
+
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "header/graphics_helper.h"
-#include "header/window.h"
+#include "../header/graphics_helper.h"
+#include "../header/window.h"
 
 #define SCREEN_W 680
 #define SCREEN_H 760

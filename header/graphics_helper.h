@@ -5,7 +5,12 @@
 #ifndef GRAPHICS_GRAPHICS_HELPER_H
 #define GRAPHICS_GRAPHICS_HELPER_H
 
+#ifdef __APPLE__
 #include <SDL2/SDL.h>
+#elif defined(_WIN32) || defined(WIN32)
+#include <SDL.h>
+#include <SDL_main.h>
+#endif
 
 // math
 int map(int x, int in_min, int in_max, int out_min, int out_max);

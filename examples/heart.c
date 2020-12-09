@@ -2,12 +2,18 @@
 // Created by Gabriel Mitterrutzner on 2019-02-16.
 //
 
+#ifdef __APPLE__
 #include <SDL2/SDL.h>
+#elif defined(_WIN32) || defined(WIN32)
+#include <SDL.h>
+#include <SDL_main.h>
+#endif
+
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "header/graphics_helper.h"
-#include "header/window.h"
+#include "../header/graphics_helper.h"
+#include "../header/window.h"
 
 #define HEIGHT 500
 #define WIDTH 500
@@ -65,7 +71,7 @@ void draw(graphic_window_t* window, void* point) {
     num++;
 }
 
-int main(void) {
+int main(int argc, char* argv[]) {
     graphic_window_t* window = create_window(WIDTH, HEIGHT, 1, "Heart");
     SDL_Point* point = get_circle_points(SIZE);
 

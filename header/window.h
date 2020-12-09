@@ -5,7 +5,12 @@
 #ifndef GRAPHICS_WINDOW_H
 #define GRAPHICS_WINDOW_H
 
+#ifdef __APPLE__
 #include <SDL2/SDL.h>
+#elif defined(_WIN32) || defined(WIN32)
+#include <SDL.h>
+#include <SDL_main.h>
+#endif
 
 typedef struct {
     SDL_bool running;
