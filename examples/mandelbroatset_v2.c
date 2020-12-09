@@ -134,7 +134,7 @@ void draw(graphic_window_t* window, void* pixelarray) {
     print(window, (int**)pixelarray);
 }
 
-int main(void) {
+int main(int argc, char* argv[]) {
     graphic_window_t* window = create_window(SCREEN_H, SCREEN_W, SCREEN_SCALE, SCREEN_NAME);
 
     int** pixelarray = malloc(sizeof(int*) * SCREEN_W * SCREEN_SCALE);

@@ -71,7 +71,7 @@ void draw(graphic_window_t* window, void* point) {
     }
 }
 
-int main(void) {
+int main(int argc, char* argv[]) {
     graphic_window_t* window = create_window(SCREEN_W, SCREEN_H, SCREEN_SCALE, "Heart");
     window_init(window);
 
