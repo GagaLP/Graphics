@@ -7,14 +7,15 @@
 
 #include <SDL2/SDL.h>
 
-//math
+// math
 int map(int x, int in_min, int in_max, int out_min, int out_max);
 double map_d(double x, double in_min, double in_max, double out_min, double out_max);
 double deg_to_rad(double angle);
 double mod_d(double num, double mod);
 
-//color
+// color
 void hsv_to_rgb(float *r, float *g, float *b, float h, float s, float v);
-void set_color(SDL_Renderer* renderer, int color);
+void set_color_hsv(SDL_Renderer *renderer, int color);
+void set_color_rgb(SDL_Renderer *renderer, uint8_t r, uint8_t g, uint8_t b);
 
-#endif //GRAPHICS_GRAPHICS_HELPER_H
+#endif    //GRAPHICS_GRAPHICS_HELPER_H

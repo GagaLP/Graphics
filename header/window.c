@@ -3,7 +3,6 @@
 //
 
 #include "window.h"
-#include <stdarg.h>
 
 void window_init(graphic_window_t *window) {
     if (SDL_Init(SDL_INIT_EVERYTHING) == -1) {
@@ -44,13 +43,13 @@ void window_quit(graphic_window_t *window) {
 
 graphic_window_t *create_window(unsigned int height, unsigned int width, double scale, char *name) {
     graphic_window_t *window = malloc(sizeof(graphic_window_t));
-    window->screen.w = (unsigned int) (width * scale);
-    window->screen.h = (unsigned int) (height * scale);
+    window->screen.w = (unsigned int)(width * scale);
+    window->screen.h = (unsigned int)(height * scale);
     window->screen.name = name;
     return window;
 }
 
-void draw_loop(graphic_window_t* window, uint32_t delay, void (* draw_func)(graphic_window_t*, void*), void* arg_draw, void *(*check_event)(graphic_window_t*, void*), void* return_val_event, void* arg_event) {
+void draw_loop(graphic_window_t *window, uint32_t delay, void (*draw_func)(graphic_window_t *, void *), void *arg_draw, void *(*check_event)(graphic_window_t *, void *), void *return_val_event, void *arg_event) {
     while (window->running) {
         if (return_val_event != NULL) {
             return_val_event = check_event(window, arg_event);

@@ -30,7 +30,7 @@ void hsv_to_rgb(float *r, float *g, float *b, float h, float s, float v) {
         return;
     }
     h /= 60;
-    i = (int) floorf(h);
+    i = (int)floorf(h);
     f = h - i;
     p = v * (1 - s);
     q = v * (1 - s * f);
@@ -69,8 +69,12 @@ void hsv_to_rgb(float *r, float *g, float *b, float h, float s, float v) {
     }
 }
 
-void set_color(SDL_Renderer* renderer, int color) {
+void set_color_hsv(SDL_Renderer *renderer, int color) {
     float r, g, b;
     hsv_to_rgb(&r, &g, &b, color, 1, 1);
-    SDL_SetRenderDrawColor(renderer, (uint8_t) floorf(r), (uint8_t) floorf(g), (uint8_t) floorf(b), 255);
+    SDL_SetRenderDrawColor(renderer, (uint8_t)floorf(r), (uint8_t)floorf(g), (uint8_t)floorf(b), 255);
+}
+
+void set_color_rgb(SDL_Renderer *renderer, uint8_t r, uint8_t g, uint8_t b) {
+    SDL_SetRenderDrawColor(renderer, r, g, b, 255);
 }

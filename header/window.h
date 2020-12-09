@@ -16,13 +16,11 @@ typedef struct {
         SDL_Window *window;
         SDL_Renderer *renderer;
     } screen;
-}graphic_window_t;
+} graphic_window_t;
 
-graphic_window_t* create_window(unsigned int height, unsigned int width, double scale, char *name);
-void draw_loop(graphic_window_t* window, uint32_t delay, void (* draw_func)(graphic_window_t*, void*), void* arg_draw, void *(*check_event)(graphic_window_t*, void*), void* return_val_event, void* arg_event);
+graphic_window_t *create_window(unsigned int height, unsigned int width, double scale, char *name);
+void draw_loop(graphic_window_t *window, uint32_t delay, void (*draw_func)(graphic_window_t *, void *), void *arg_draw, void *(*check_event)(graphic_window_t *, void *), void *return_val_event, void *arg_event);
 void window_init(graphic_window_t *window);
 void window_quit(graphic_window_t *window);
 
-
-
-#endif //GRAPHICS_WINDOW_H
+#endif    //GRAPHICS_WINDOW_H
