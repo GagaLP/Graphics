@@ -99,11 +99,11 @@ void* check_event(graphic_window_t* window, void* nothing) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT)
-            window->running = SDL_FALSE;
+            window_set_running(window, SDL_FALSE);
         else if (event.type == SDL_KEYDOWN) {
             switch (event.key.keysym.sym) {
                 case 'q':
-                    window->running = SDL_FALSE;
+                    window_set_running(window, SDL_FALSE);
                     break;
                 default:
                     break;
@@ -123,8 +123,9 @@ void free_object(int** array) {
 void print(graphic_window_t* window, int** array) {
     for (int i = 0; i < SCREEN_W * SCREEN_SCALE; ++i) {
         for (int j = 0; j < SCREEN_H * SCREEN_SCALE; ++j) {
-            set_color_hsv(window->screen.renderer, *(*(array + i) + j));
-            SDL_RenderDrawPoint(window->screen.renderer, i, j);
+            set_color_hsv(window, *(*(array + i) + j));
+            SDL_Point point = {i, j};
+            draw_point(window, point);
         }
     }
 }

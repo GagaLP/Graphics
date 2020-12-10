@@ -24,11 +24,11 @@ void* check_event(graphic_window_t* window, void* nothing) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT)
-            window->running = SDL_FALSE;
+            window_set_running(window, SDL_FALSE);
         else if (event.type == SDL_KEYDOWN) {
             switch (event.key.keysym.sym) {
                 case 'q':
-                    window->running = SDL_FALSE;
+                    window_set_running(window, SDL_FALSE);
                     break;
                 default:
                     break;
@@ -41,11 +41,11 @@ void* check_event(graphic_window_t* window, void* nothing) {
 void draw_heart(graphic_window_t* window, SDL_Point* test, int size, int max) {
     if ((size / max) % 2) {
         for (int j = size % max + 1; j < max; ++j) {
-            SDL_RenderDrawLine(window->screen.renderer, test[j].x, test[j].y, test[(j + 1) % max].x, test[(j + 1) % max].y);
+            draw_line(window, test[j], test[(j + 1) % max]);
         }
     } else {
         for (int j = 0; j < size % max + 1; ++j) {
-            SDL_RenderDrawLine(window->screen.renderer, test[j].x, test[j].y, test[(j + 1) % max].x, test[(j + 1) % max].y);
+            draw_line(window, test[j], test[(j + 1) % max]);
         }
     }
 }
@@ -66,7 +66,7 @@ void free_data(SDL_Point* point) {
 
 void draw(graphic_window_t* window, void* point) {
     static int num = 0;
-    set_color_hsv(window->screen.renderer, num % 330);
+    set_color_hsv(window, num % 330);
     draw_heart(window, (SDL_Point*)point, num, SIZE);
     num++;
 }

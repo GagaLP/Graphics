@@ -26,11 +26,11 @@ void* check_event(graphic_window_t* window, void* nothing) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT)
-            window->running = SDL_FALSE;
+            window_set_running(window, SDL_FALSE);
         else if (event.type == SDL_KEYDOWN) {
             switch (event.key.keysym.sym) {
                 case 'q':
-                    window->running = SDL_FALSE;
+                    window_set_running(window, SDL_FALSE);
                     break;
                 default:
                     break;
@@ -42,7 +42,7 @@ void* check_event(graphic_window_t* window, void* nothing) {
 
 void draw_times_table(graphic_window_t* window, SDL_Point* test, int size, double times) {
     for (int j = 0; j < size; ++j) {
-        SDL_RenderDrawLine(window->screen.renderer, test[j].x, test[j].y, test[(int)(j * times) % size].x, test[(int)(j * times) % size].y);
+        draw_line(window, test[j], test[(int)(j * times) % size]);
     }
 }
 
@@ -62,7 +62,7 @@ void free_data(SDL_Point* points) {
 
 void draw(graphic_window_t* window, void* point) {
     static double num = 0;
-    set_color_hsv(window->screen.renderer, (int)map_d(mod_d(num, 3), 0, 2.5, 255, 0));
+    set_color_hsv(window, (int)map_d(mod_d(num, 3), 0, 2.5, 255, 0));
     draw_times_table(window, point, SIZE, num);
     if (num < 100) {
         num = (num + 0.01);

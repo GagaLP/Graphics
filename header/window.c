@@ -66,3 +66,7 @@ void draw_loop(graphic_window_t *window, uint32_t delay, void (*draw_func)(graph
         SDL_Delay(delay);
     }
 }
+
+void window_set_running(graphic_window_t *window, SDL_bool running) {
+    window->running = running;
+}

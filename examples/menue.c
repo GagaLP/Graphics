@@ -1,5 +1,5 @@
 //
-// Created by Gabriel Mitterrutzner on 2020-12-09.
+// Created by Gabriel Mitterrutzner on 2020-12-10.
 //
 
 #ifdef __APPLE__
@@ -110,7 +110,7 @@ void draw_field(graphic_window_t* window, SDL_Point* test) {
     }
 }
 
-SDL_Point* get_circle_points(void) {
+SDL_Point* get_field_points(void) {
     SDL_Point* test = malloc(sizeof(SDL_Point) * 8);
 
     test[0].x = SCREEN_W / 3;
@@ -170,16 +170,32 @@ void draw(graphic_window_t* window, void* point) {
     draw_field(window, point);
 }
 
-int main(void) {
-    graphic_window_t* window = create_window(SCREEN_W, SCREEN_H, SCREEN_SCALE, "Tic Tac Toe");
+void start_tic_tac_toe(void) {
+    graphic_window_t* window = create_window(SCREEN_W, SCREEN_H, SCREEN_SCALE, "Main Menue");
+    SDL_Point* point = get_field_points();
+
     window_init(window);
-
-    SDL_Point* point = get_circle_points();
-
     draw_loop(window, 16, draw, point, check_event, NULL, NULL);
+    window_quit(window);
 
     free_data(point);
-    window_quit(window);
+}
+
+int main(void) {
+    char selected_programm = '0';
+    while (selected_programm != 'q') {
+        printf("1) Tic Tac Toe\n");
+        printf("Input the game you wanna play: ");
+        scanf("%c", &selected_programm);
+        fflush(stdin);
+        switch (selected_programm) {
+            case '1':
+                start_tic_tac_toe();
+                break;
+            default:
+                break;
+        }
+    }
 
     return EXIT_SUCCESS;
 }

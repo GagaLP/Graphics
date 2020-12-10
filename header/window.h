@@ -12,6 +12,8 @@
 #include <SDL_main.h>
 #endif
 
+#include <stdio.h>
+
 typedef struct {
     SDL_bool running;
     struct {
@@ -27,5 +29,6 @@ graphic_window_t *create_window(unsigned int height, unsigned int width, double 
 void draw_loop(graphic_window_t *window, uint32_t delay, void (*draw_func)(graphic_window_t *, void *), void *arg_draw, void *(*check_event)(graphic_window_t *, void *), void *return_val_event, void *arg_event);
 void window_init(graphic_window_t *window);
 void window_quit(graphic_window_t *window);
+void window_set_running(graphic_window_t *window, SDL_bool running);
 
 #endif    //GRAPHICS_WINDOW_H

@@ -39,11 +39,11 @@ void* check_event(graphic_window_t* window, void* nothing) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT)
-            window->running = SDL_FALSE;
+            window_set_running(window, SDL_FALSE);
         else if (event.type == SDL_KEYDOWN) {
             switch (event.key.keysym.sym) {
                 case 'q':
-                    window->running = SDL_FALSE;
+                    window_set_running(window, SDL_FALSE);
                     break;
                 default:
                     break;
@@ -78,9 +78,9 @@ void branch(graphic_window_t* window, SDL_Point start_point, int depth, double l
     SDL_Point new_point = create_point(start_point.x, start_point.y - LINE_LENGTH);
 
     if (depth == 0) {
-        set_color_hsv(window->screen.renderer, color);
-        SDL_RenderDrawLine(window->screen.renderer, start_point.x, start_point.y, start_point.x,
-                           start_point.y - LINE_LENGTH);
+        set_color_hsv(window, color);
+        SDL_Point tmp_point = {start_point.x, start_point.y - LINE_LENGTH};
+        draw_line(window, start_point, tmp_point);
         branch(window, new_point, depth + 1, last_angle);
     } else if (depth < FRACTAL_DEPTH) {
         int length = LINE_LENGTH;
@@ -94,10 +94,10 @@ void branch(graphic_window_t* window, SDL_Point start_point, int depth, double l
         SDL_Point left_vect = get_new_vector(cur_angle_plus, length, start_point);
         SDL_Point right_vect = get_new_vector(cur_angle_minus, length, start_point);
 
-        set_color_hsv(window->screen.renderer, color);
+        set_color_hsv(window, color);
 
-        SDL_RenderDrawLine(window->screen.renderer, start_point.x, start_point.y, left_vect.x, left_vect.y);
-        SDL_RenderDrawLine(window->screen.renderer, start_point.x, start_point.y, right_vect.x, right_vect.y);
+        draw_line(window, start_point, left_vect);
+        draw_line(window, start_point, right_vect);
 
         branch(window, left_vect, depth + 1, cur_angle_plus);
         branch(window, right_vect, depth + 1, cur_angle_minus);
