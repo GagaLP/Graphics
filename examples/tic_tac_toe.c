@@ -83,16 +83,14 @@ void draw_field(graphic_window_t* window, SDL_Point* test) {
 
     for (int i = 0; i < 9; i++) {
         if (tic_tac_toe[i] == 1) {
-            int half_x = SCREEN_W / 3 / 2;
-            int half_y = SCREEN_H / 3 / 2;
             int x = i % 3;
             int y = i / 3;
 
-            SDL_Point point_one = {SCREEN_W / 3 * (x + 1) - 10, half_y + SCREEN_H / 3 * y};
-            SDL_Point point_two = {10 + SCREEN_W / 3 * x, half_y + SCREEN_H / 3 * y};
+            SDL_Point point_one = {SCREEN_W / 3 * (x + 1) - 10, SCREEN_H / 3 * (y + 1) - 10};
+            SDL_Point point_two = {10 + SCREEN_W / 3 * x, 10 + SCREEN_H / 3 * y};
 
-            SDL_Point point_three = {half_x + SCREEN_W / 3 * x, 10 + SCREEN_H / 3 * y};
-            SDL_Point point_four = {half_x + SCREEN_W / 3 * x, SCREEN_H / 3 * (y + 1) - 10};
+            SDL_Point point_three = {SCREEN_W / 3 * (x + 1) - 10, 10 + SCREEN_H / 3 * y};
+            SDL_Point point_four = {10 + SCREEN_W / 3 * x, SCREEN_H / 3 * (y + 1) - 10};
 
             draw_line(window, point_one, point_two);
             draw_line(window, point_three, point_four);
