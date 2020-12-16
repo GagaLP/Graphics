@@ -2,18 +2,10 @@
 // Created by Gabriel Mitterrutzner on 2019-02-15.
 //
 
-#ifdef __APPLE__
-#include <SDL2/SDL.h>
-#elif defined(_WIN32) || defined(WIN32)
-#include <SDL.h>
-#include <SDL_main.h>
-#endif
-
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "../header/graphics_helper.h"
-#include "../header/window.h"
+#include "../header/game_engine_header.h"
 
 #define SCREEN_W 500
 #define SCREEN_H 500
@@ -72,15 +64,12 @@ void draw(graphic_window_t* window, void* point) {
 }
 
 int main(int argc, char* argv[]) {
-    graphic_window_t* window = create_window(SCREEN_W, SCREEN_H, SCREEN_SCALE, "Heart");
-    window_init(window);
-
     SDL_Point* point = get_circle_points(SIZE);
 
+    graphic_window_t* window = window_init(SCREEN_W, SCREEN_H, SCREEN_SCALE, SCREEN_NAME);
     draw_loop(window, 16, draw, point, check_event, NULL, NULL);
-
-    free_data(point);
     window_quit(window);
 
+    free_data(point);
     return EXIT_SUCCESS;
 }

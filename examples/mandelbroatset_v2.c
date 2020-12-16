@@ -2,18 +2,10 @@
 // Created by Gabriel Mitterrutzner on 2019-02-18.
 //
 
-#ifdef __APPLE__
-#include <SDL2/SDL.h>
-#elif defined(_WIN32) || defined(WIN32)
-#include <SDL.h>
-#include <SDL_main.h>
-#endif
-
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "../header/graphics_helper.h"
-#include "../header/window.h"
+#include "../header/game_engine_header.h"
 
 #define SCREEN_W 680
 #define SCREEN_H 760
@@ -136,21 +128,20 @@ void draw(graphic_window_t* window, void* pixelarray) {
 }
 
 int main(int argc, char* argv[]) {
-    graphic_window_t* window = create_window(SCREEN_H, SCREEN_W, SCREEN_SCALE, SCREEN_NAME);
-
     int** pixelarray = malloc(sizeof(int*) * SCREEN_W * SCREEN_SCALE);
+
     for (int i = 0; i < SCREEN_W * SCREEN_SCALE; ++i) {
         *(pixelarray + i) = malloc(sizeof(int) * SCREEN_H * SCREEN_SCALE);
     }
 
-    window_init(window);
-
     mandelbroat(pixelarray);
 
+    // lol switched up h and w
+    graphic_window_t* window = window_init(SCREEN_H, SCREEN_W, SCREEN_SCALE, SCREEN_NAME);
     draw_loop(window, 16, draw, pixelarray, check_event, NULL, NULL);
+    window_quit(window);
 
     free_object(pixelarray);
-    window_quit(window);
 
     return EXIT_SUCCESS;
 }

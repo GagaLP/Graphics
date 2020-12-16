@@ -4,32 +4,6 @@
 
 #include "window.h"
 
-void window_init(graphic_window_t *window) {
-    if (SDL_Init(SDL_INIT_EVERYTHING) == -1) {
-        printf("Error %s", SDL_GetError());
-        exit(-1);
-    }
-
-    window->screen.window = SDL_CreateWindow(window->screen.name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                             window->screen.w,
-                                             window->screen.h, SDL_WINDOW_SHOWN);
-
-    if (window->screen.window == NULL) {
-        printf("Error %s", SDL_GetError());
-        exit(-2);
-    }
-
-    window->screen.renderer = SDL_CreateRenderer(window->screen.window, -1, SDL_RENDERER_ACCELERATED);
-
-    if (window->screen.renderer == NULL) {
-        printf("Error %s", SDL_GetError());
-        SDL_DestroyWindow(window->screen.window);
-        exit(-3);
-    }
-
-    window->running = SDL_TRUE;
-}
-
 void window_quit(graphic_window_t *window) {
     SDL_DestroyRenderer(window->screen.renderer);
     SDL_DestroyWindow(window->screen.window);
@@ -38,14 +12,33 @@ void window_quit(graphic_window_t *window) {
     window->screen.window = NULL;
 
     free(window);
-    SDL_Quit();
 }
 
-graphic_window_t *create_window(unsigned int height, unsigned int width, double scale, char *name) {
+graphic_window_t *window_init(unsigned int height, unsigned int width, double scale, char *name) {
     graphic_window_t *window = malloc(sizeof(graphic_window_t));
     window->screen.w = (unsigned int)(width * scale);
     window->screen.h = (unsigned int)(height * scale);
     window->screen.name = name;
+
+    window->screen.window = SDL_CreateWindow(window->screen.name, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                             window->screen.w,
+                                             window->screen.h, SDL_WINDOW_SHOWN);
+
+    if (window->screen.window == NULL) {
+        printf("Error %s", SDL_GetError());
+        exit(-1);
+    }
+
+    window->screen.renderer = SDL_CreateRenderer(window->screen.window, -1, SDL_RENDERER_ACCELERATED);
+
+    if (window->screen.renderer == NULL) {
+        printf("Error %s", SDL_GetError());
+        SDL_DestroyWindow(window->screen.window);
+        exit(-1);
+    }
+
+    window->running = SDL_TRUE;
+
     return window;
 }
 

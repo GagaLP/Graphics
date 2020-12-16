@@ -9,8 +9,8 @@ if (WIN32)
     set(SDL2_INCLUDE_DIR include)
     set(SDL2_LIBRARY_DIR lib/x64)
 elseif (APPLE)
-    set(SDL2_INCLUDE_DIR /usr/local/include)
-    set(SDL2_LIBRARY_DIR /usr/local/lib)
+    set(SDL2_INCLUDE_DIR /opt/homebrew/include)
+    set(SDL2_LIBRARY_DIR /opt/homebrew/lib)
 endif ()
 
 # add include and library dir to every add_executable

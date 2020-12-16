@@ -2,34 +2,21 @@
 // Created by Gabriel Mitterrutzner on 2020-12-10.
 //
 
-#ifdef __APPLE__
-#include <SDL2/SDL.h>
-#elif defined(_WIN32) || defined(WIN32)
-#include <SDL.h>
-#include <SDL_main.h>
-#endif
-
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "../header/graphics_helper.h"
-#include "../header/window.h"
+#include "../header/game_engine_header.h"
 
 #define SCREEN_W 500
 #define SCREEN_H 500
 #define SCREEN_SCALE 1
-#define SCREEN_NAME "Times Table"
+#define SCREEN_NAME "Test Text"
 
-int tic_tac_toe[9] = {0};
+text_fields_t* texts;
 
-int update_fild(int position) {
-    static int tic = 1;
-    if (tic_tac_toe[position] == 0) {
-        tic_tac_toe[position] = tic;
-        tic *= -1;
-    }
-    return tic;
-}
+Uint64 now = 0;
+Uint64 last = 0;
+double delta_time = 0;
 
 void* check_event(graphic_window_t* window, void* nothing) {
     SDL_Event event;
@@ -41,33 +28,6 @@ void* check_event(graphic_window_t* window, void* nothing) {
                 case 'q':
                     window_set_running(window, SDL_FALSE);
                     break;
-                case '1':
-                    update_fild(0);
-                    break;
-                case '2':
-                    update_fild(1);
-                    break;
-                case '3':
-                    update_fild(2);
-                    break;
-                case '4':
-                    update_fild(3);
-                    break;
-                case '5':
-                    update_fild(4);
-                    break;
-                case '6':
-                    update_fild(5);
-                    break;
-                case '7':
-                    update_fild(6);
-                    break;
-                case '8':
-                    update_fild(7);
-                    break;
-                case '9':
-                    update_fild(8);
-                    break;
                 default:
                     break;
             }
@@ -76,126 +36,56 @@ void* check_event(graphic_window_t* window, void* nothing) {
     return nothing;
 }
 
-void draw_field(graphic_window_t* window, SDL_Point* test) {
-    for (int i = 0; i < 8; i += 2) {
-        draw_line(window, test[i], test[i + 1]);
-    }
-
-    for (int i = 0; i < 9; i++) {
-        if (tic_tac_toe[i] == 1) {
-            int half_x = SCREEN_W / 3 / 2;
-            int half_y = SCREEN_H / 3 / 2;
-            int x = i % 3;
-            int y = i / 3;
-
-            SDL_Point point_one = {SCREEN_W / 3 * (x + 1) - 10, half_y + SCREEN_H / 3 * y};
-            SDL_Point point_two = {10 + SCREEN_W / 3 * x, half_y + SCREEN_H / 3 * y};
-
-            SDL_Point point_three = {half_x + SCREEN_W / 3 * x, 10 + SCREEN_H / 3 * y};
-            SDL_Point point_four = {half_x + SCREEN_W / 3 * x, SCREEN_H / 3 * (y + 1) - 10};
-
-            draw_line(window, point_one, point_two);
-            draw_line(window, point_three, point_four);
-        } else if (tic_tac_toe[i] == -1) {
-            int half_x = SCREEN_W / 3 / 2;
-            int half_y = SCREEN_H / 3 / 2;
-
-            int x = i % 3;
-            int y = i / 3;
-
-            SDL_Point center = {half_x + SCREEN_W / 3 * x, half_y + SCREEN_H / 3 * y};
-
-            draw_circle(window, center, half_x - 10);
-        }
-    }
-}
-
-SDL_Point* get_field_points(void) {
-    SDL_Point* test = malloc(sizeof(SDL_Point) * 8);
-
-    test[0].x = SCREEN_W / 3;
-    test[0].y = 10;
-    test[1].x = SCREEN_W / 3;
-    test[1].y = SCREEN_H - 10;
-    test[2].x = SCREEN_W / 3 * 2;
-    test[2].y = 10;
-    test[3].x = SCREEN_W / 3 * 2;
-    test[3].y = SCREEN_H - 10;
-    test[4].x = 10;
-    test[4].y = SCREEN_H / 3;
-    test[5].x = SCREEN_W - 10;
-    test[5].y = SCREEN_H / 3;
-    test[6].x = 10;
-    test[6].y = SCREEN_H / 3 * 2;
-    test[7].x = SCREEN_W - 10;
-    test[7].y = SCREEN_H / 3 * 2;
-
-    return test;
-}
-
-void free_data(SDL_Point* points) {
-    free(points);
-}
-
-bool check_winner(void) {
-    bool return_val = false;
-    if ((tic_tac_toe[0] == tic_tac_toe[4] && tic_tac_toe[0] == tic_tac_toe[8] && tic_tac_toe[0] != 0) ||    // check for diagonal
-        (tic_tac_toe[2] == tic_tac_toe[4] && tic_tac_toe[2] == tic_tac_toe[6] && tic_tac_toe[2] != 0)) {    // check for diagonal
-        return_val = true;
-    } else {
-        for (int i = 0; i < 3; i++) {
-            if ((tic_tac_toe[i] == tic_tac_toe[i + 3] && tic_tac_toe[i] == tic_tac_toe[i + 6] && tic_tac_toe[i] != 0) ||                        // check horizontal
-                (tic_tac_toe[i * 3] == tic_tac_toe[i * 3 + 1] && tic_tac_toe[i * 3] == tic_tac_toe[i * 3 + 2] && tic_tac_toe[i * 3] != 0)) {    // check for vertical
-                return_val = true;
-            }
-        }
-    }
-
-    return return_val;
-}
-
-void reset_field(void) {
-    for (int i = 0; i < 9; i++) {
-        tic_tac_toe[i] = 0;
-    }
-}
-
 void draw(graphic_window_t* window, void* point) {
+    static int times = 0;
+    static bool delete = true;
+    static int x = 0;
+    static int y = 0;
+
     set_color_rgb(window, 255, 255, 255);
 
-    if (check_winner()) {
-        reset_field();
+    print_text_window(window, texts);
+    
+    char buffer_value[50];
+    last = now;
+    now = SDL_GetPerformanceCounter();
+
+    delta_time = (double)((now - last) * 1000 / (double)SDL_GetPerformanceFrequency());
+
+    sprintf(buffer_value, "%.2lf", 1000.0 / delta_time);
+    change_text_at(window, texts, buffer_value, delete ? 2 : 1);
+
+    if (times > 100 && delete) {
+        delete_text_at(texts, 0);
+        delete = false;
     }
 
-    draw_field(window, point);
+    move_text_at(texts, delete ? 3 : 2, x, y);
+
+    static int i = 5;
+
+    i = i > 0 && i + x < 500 ? +5 : -5;
+    i = i < 0 && i + x > 0 ? -5 : +5;
+
+    x += i;
+    y += i;
+
+    times++;
 }
 
-void start_tic_tac_toe(void) {
-    graphic_window_t* window = create_window(SCREEN_W, SCREEN_H, SCREEN_SCALE, "Main Menue");
-    SDL_Point* point = get_field_points();
-
-    window_init(window);
-    draw_loop(window, 16, draw, point, check_event, NULL, NULL);
-    window_quit(window);
-
-    free_data(point);
-}
 
 int main(void) {
-    char selected_programm = '0';
-    while (selected_programm != 'q') {
-        printf("1) Tic Tac Toe\n");
-        printf("Input the game you wanna play: ");
-        scanf("%c", &selected_programm);
-        fflush(stdin);
-        switch (selected_programm) {
-            case '1':
-                start_tic_tac_toe();
-                break;
-            default:
-                break;
-        }
-    }
+    graphic_window_t* window = window_init(SCREEN_W, SCREEN_H, SCREEN_SCALE, SCREEN_NAME);
+    texts = create_text("/System/Library/Fonts/Supplemental/Chalkduster.ttf", 24);
+    add_text(window, texts, "hello manuel", (SDL_Color) {255, 255, 255}, 10, 10);
+    add_text(window, texts, "FPS: ", (SDL_Color) {255, 255, 255}, 10, 40);
+    add_text(window, texts, "0.00", (SDL_Color) {255, 255, 255}, 85, 40);
+    add_text(window, texts, "DVD", (SDL_Color) {255, 255, 255}, 0, 0);
 
+    now = SDL_GetPerformanceCounter();
+    draw_loop(window, 16, draw, NULL, check_event, NULL, NULL);
+
+    free_texture(texts);
+    window_quit(window);
     return EXIT_SUCCESS;
 }
