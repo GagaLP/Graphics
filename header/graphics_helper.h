@@ -12,6 +12,7 @@
 #include <SDL_main.h>
 #endif
 
+#include <stdbool.h>
 #include <math.h>
 
 #include "window.h"
@@ -30,6 +31,7 @@ void set_color_rgb(graphic_window_t *window, uint8_t r, uint8_t g, uint8_t b);
 // draw circle
 void draw_circle(graphic_window_t *window, SDL_Point center, int r);
 void draw_line(graphic_window_t *window, SDL_Point point_one, SDL_Point point_two);
+void draw_rect(graphic_window_t *window, SDL_Rect rect, bool filled);
 void draw_point(graphic_window_t *window, SDL_Point point);
 
 #endif    //GRAPHICS_GRAPHICS_HELPER_H

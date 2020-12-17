@@ -36,6 +36,7 @@ void* check_event(graphic_window_t* window, void* nothing) {
     return nothing;
 }
 
+// just some tests
 void draw(graphic_window_t* window, void* point) {
     static int times = 0;
     static bool delete = true;
@@ -62,10 +63,11 @@ void draw(graphic_window_t* window, void* point) {
 
     move_text_at(texts, delete ? 3 : 2, x, y);
 
-    static int i = 5;
+    static int i = 10;
+    const int speed = 5;
 
-    i = i > 0 && i + x < 500 ? +5 : -5;
-    i = i < 0 && i + x > 0 ? -5 : +5;
+    i = i > 0 && i + x < 500 ? +speed : -speed;
+    i = i < 0 && i + x > 0 ? -speed : +speed;
 
     x += i;
     y += i;
@@ -83,7 +85,7 @@ int main(void) {
     add_text(window, texts, "DVD", (SDL_Color) {255, 255, 255}, 0, 0);
 
     now = SDL_GetPerformanceCounter();
-    draw_loop(window, 16, draw, NULL, check_event, NULL, NULL);
+    draw_loop(window, 15, draw, NULL, check_event, NULL, NULL);
 
     free_texture(texts);
     window_quit(window);

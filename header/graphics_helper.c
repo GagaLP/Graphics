@@ -129,3 +129,12 @@ void draw_line(graphic_window_t *window, SDL_Point point_one, SDL_Point point_tw
 void draw_point(graphic_window_t *window, SDL_Point point) {
     SDL_RenderDrawPoint(window->screen.renderer, point.x, point.y);
 }
+
+void draw_rect(graphic_window_t *window, SDL_Rect rect, bool filled) {
+    if (filled) {
+        SDL_RenderFillRect(window->screen.renderer, &rect);
+    } else {
+        SDL_RenderDrawRect(window->screen.renderer, &rect);
+    }
+}
+
