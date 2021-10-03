@@ -15,24 +15,32 @@
 #endif
 
 #include <string.h>
+#include <stdbool.h>
 
 #include "texture.h"
 
 typedef struct {
-    TTF_Font* font;         // The font of the window
+    SDL_Color color;            // color
+    bool show;                  // visible
+    texture_t* texture;         // The created textures
+} textures_t;
 
-    int max_textures;       // number of textures
-    int texture_count;      // number of textures
+typedef struct {
+    TTF_Font* font;             // The font of the window
 
-    texture_t** textures;   // The created textures
+    int max_textures;           // number of textures
+    int texture_count;          // number of textures
+
+    textures_t* textures;
 } text_fields_t;
 
-text_fields_t* create_text(char* font_name, int font_size);
+text_fields_t* texts_init(char* font_name, int font_size);
 void add_text(graphic_window_t* window, text_fields_t* text_fields, char* text, SDL_Color color, int x, int y);
-void print_text_window(graphic_window_t* window, text_fields_t* text_fields);
-void change_text_at(graphic_window_t* window, text_fields_t* text_fields, char* text, int at);
-void delete_text_at(text_fields_t* text_fields, int at);
-void move_text_at(text_fields_t* text_fields, int at, int x, int y);
-void free_texture(text_fields_t* text_fields);
+void show_texts(graphic_window_t* window, text_fields_t* text_fields);
+void change_text(graphic_window_t* window, text_fields_t* text_fields, char* text, int at);
+void move_text(text_fields_t* text_fields, int at, int x, int y);
+void change_visibility_text(text_fields_t* text_fields, int at, bool visibility);
+void delete_text(text_fields_t* text_fields, int at);
+void texts_quit(text_fields_t* text_fields);
 
-#endif    // TEXT_FIELD_HH
+#endif    // TEXT_FIELD_H
